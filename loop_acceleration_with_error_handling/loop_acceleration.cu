@@ -21,6 +21,7 @@ __global__ void add_two(int* array,int array_size)
 int main()
 {
 	int N = 2<<10;
+	cudaError_t syncE, asyncE;
 	// create a pointer and allocate memory for it
 	printf("starting things\n");
 	int * arr;
@@ -31,8 +32,11 @@ int main()
 	printf("N=%i and size=%i\n",(int)N,(int)size);
 	 // run the cuda kernel;
 	add_two<<<8,16>>>(arr,N);// setting lower threads and blocks than actual data
-	cudaDeviceSynchronize();
+	syncE = cudaGetLastError();
+	asyncE = cudaDeviceSynchronize();
 
+	printf("%s",syncE != cudaSuccess? "synchronous Error occured\n":"Great!...No synchronous Error\n");
+	printf("%s",asyncE != cudaSuccess? "asynchronous Error occured\n":"Great!...No asynchronous Error\n");
 
 	bool all_good = true;
 	for(size_t i = 0; i<N;i++)
