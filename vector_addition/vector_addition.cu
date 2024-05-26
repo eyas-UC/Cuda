@@ -12,7 +12,7 @@ __global__ void add_vectors(int* A,int* B, int* C, int array_size)
 
 	for (int k = i; k <array_size ; k+=stride)
 	{
-		C[k]=A[k] + A[k];
+		C[k]=A[k] + B[k];
 	}
 }
 
